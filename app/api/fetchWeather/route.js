@@ -1,9 +1,12 @@
+import Link from "next/link";
 export async function GET(req) {
     try {
-        // Получаем данные (замени на свой URL)
-        const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,snowfall,weather_code,pressure_msl,visibility,wind_speed_10m,wind_direction_10m");
-        const rawData = await response.json();
 
+        console.log("Получаем данные с API...");
+        const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,snowfall,weather_code,pressure_msl,visibility,wind_speed_10m,wind_direction_10m");
+        console.log("Ответ от API:", response);
+        const rawData = await response.json();
+        console.log("Парсинг данных:", rawData);
         // Достаем почасовые данные
         const { hourly } = rawData;
 
@@ -74,7 +77,7 @@ export async function GET(req) {
             daily_forecast,
             additional_info: {
                 feels_like: hourly.apparent_temperature[0] || null,
-                uv_index: hourly.uv_index[0] || null,
+                //uv_index: hourly.uv_index[0] || null,
                 wind_speed: hourly.wind_speed_10m[0] || null,
                 humidity: hourly.relative_humidity_2m[0] || null,
                 precipitation: hourly.precipitation[0] || 0,
